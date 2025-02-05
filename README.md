@@ -1,3 +1,3 @@
 # tc.github.io
 <br>
-#Author : Anurag Triapthi
+#Author : Anurag Tripathi

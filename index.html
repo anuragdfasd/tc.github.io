@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Exam Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 500px; margin-top: 50px; }
+        .card { border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .error { color: red; font-size: 14px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card p-4">
+            <h2 class="text-center">Find Your Exam Center</h2>
+            <div class="mb-3">
+                <input type="text" id="symbol_no" class="form-control" placeholder="Enter Symbol No. (500370XXX)" maxlength="9">
+                <div id="error-message" class="error"></div>
+            </div>
+            <button class="btn btn-primary w-100" onclick="findCenter()">Find Center</button>
+            <div id="result" class="mt-3"></div>
+        </div>
+    </div>
+    <script>
+        function findCenter() {
+            let symbolNo = document.getElementById("symbol_no").value.trim();
+            let errorMessage = document.getElementById("error-message");
+            let resultDiv = document.getElementById("result");
+            
+            errorMessage.innerHTML = "";
+            resultDiv.innerHTML = "";
+            
+            if (!/^500370\d{3}$/.test(symbolNo)) {
+                errorMessage.innerHTML = "Invalid Symbol Number! Must be 9 digits and start with '500370'.";
+                return;
+            }
+            
+            // Simulate fetching data (Replace with API call if needed)
+            let centers = {
+                "500370001-500370650": { name: "Baneshwor Multiple Campus, Shantinagar", link: "https://maps.app.goo.gl/vi8Cp1YkY4s1M3Mr6" },
+                "500370651-500370938": { name: "Himalayan College, Koteshwor", link: "https://maps.app.goo.gl/HhEbkCQU13RDE19H7" }
+            };
+            
+            for (let range in centers) {
+                let [start, end] = range.split("-").map(Number);
+                let num = parseInt(symbolNo);
+                if (num >= start && num <= end) {
+                    resultDiv.innerHTML = `<div class='alert alert-success'>Your exam center is: <a href='${centers[range].link}' target='_blank'>${centers[range].name}</a></div>`;
+                    return;
+                }
+            }
+            
+            resultDiv.innerHTML = `<div class='alert alert-danger'>No exam center found for this symbol number.</div>`;
+        }
+    </script>
+</body>
+</html>
